@@ -1,5 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, Model, Table, BelongsToMany } from "sequelize-typescript";
+import { UserOrganization } from "src/organizations/organizations-users.model";
+import { Organization } from "src/organizations/organizations.model";
+
 
 interface UserCreationAttrs {
     email: string,
@@ -39,8 +42,11 @@ export class User extends Model<User, UserCreationAttrs> {
     @Column({ type: DataType.ENUM, values: ["married", "unmarried"] })
     married: string
 
-    @ApiProperty({example: "Molod Gaysin", description: "Organization that includes the user"})
-    @Column({ type: DataType.ENUM, values: ["married", "unmarried"] })
-    organization: object
+    @ApiProperty({example: "user, admin, moderator", description: "Admin can add and delete people in organization"})
+    @Column({ type: DataType.ENUM, values: ["user", "admin", "moderator"], defaultValue: "user" })
+    role: string
+
+    @BelongsToMany(() => Organization, () => UserOrganization)
+    organization: Organization[];
 
 }
