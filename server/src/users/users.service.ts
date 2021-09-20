@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './users.model';
 import { CreateUserDto } from "./dto/create-user.dto";
+import { OrganizationsService } from 'src/organizations/organizations.service';
 
 @Injectable()
 export class UsersService {
 
-    constructor(@InjectModel(User) private userRepository: typeof User){}
+    constructor(@InjectModel(User) private userRepository: typeof User,
+    private organizationService: OrganizationsService ){}
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto);
@@ -14,10 +16,10 @@ export class UsersService {
         return user;
     }
 
-    async getAllUsers() {
-        const users = await this.userRepository.findAll();
+    async setOrganizationToUser(id: number, organizationId: number) {
+        const user = await this.userRepository.findAll({ where: { id } });
 
-        return users;
+        // await user.$set("organization", [organizationId])
     }
 
 }

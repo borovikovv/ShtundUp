@@ -11,6 +11,9 @@ import { UserOrganization } from "./organizations-users.model";
     providers: [OrganizationsService],
     imports: [
         SequelizeModule.forFeature([Organization, User, UserOrganization ])
+    ],
+    exports: [
+        OrganizationsService
     ]
     
 })
