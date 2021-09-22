@@ -2,7 +2,7 @@ import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript
 import { User } from "src/users/users.model";
 import { Organization } from "./organizations.model";
 
-@Table({tableName: "user_roles", createdAt: false, updatedAt: false})
+@Table({tableName: "user-organization", createdAt: false, updatedAt: false})
 export class UserOrganization extends Model<UserOrganization> {
     @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
     id: number
