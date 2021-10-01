@@ -16,8 +16,20 @@ export class UsersService {
         return user;
     }
 
+    async getUserByEmail(email: string) {
+        const user = await this.userRepository.findOne({ where: { email }, include: { all: true } });
+
+        return user;
+    }
+
+    async findUserById(id: number) {
+        const user = await this.userRepository.findOne({ where: { id }, include: { all: true } });
+
+        return user;
+    }
+
     async setOrganizationToUser(id: number, organizationId: number) {
-        const user = await this.userRepository.findAll({ where: { id } });
+        const user = await this.userRepository.findOne({ where: { id } });
 
         // await user.$set("organization", [organizationId])
     }

@@ -1,5 +1,7 @@
 import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
+import { RedisModule } from "src/redis/redis.module";
+import { UsersModule } from "src/users/users.module";
 
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
@@ -11,6 +13,8 @@ import { AuthSerializer } from "./serialization.provider";
     PassportModule.register({
       session: true,
     }),
+    UsersModule,
+    RedisModule
   ],
   providers: [AuthService, LocalStrategy, AuthSerializer],
   controllers: [AuthController],

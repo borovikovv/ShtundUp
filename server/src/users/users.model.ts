@@ -46,6 +46,10 @@ export class User extends Model<User, UserCreationAttrs> {
     @Column({ type: DataType.ENUM, values: ["user", "admin", "moderator"], defaultValue: "user" })
     role: string
 
+    @ApiProperty({example: "Taras Petrovich", description: "User name"})
+    @Column({ type: DataType.STRING })
+    name: string
+
     @BelongsToMany(() => Organization, () => UserOrganization)
     organization: Organization[];
 

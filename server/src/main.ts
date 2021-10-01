@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const configure = new ConfigService();
@@ -8,6 +9,7 @@ const configure = new ConfigService();
 async function bootstrap() {
   const PORT = Number(configure.get("PORT"));
   const app = await NestFactory.create(AppModule);
+  const logger = app.get(Logger);
 
   const config = new DocumentBuilder()
     .setTitle("ShtundUp")
@@ -19,6 +21,7 @@ async function bootstrap() {
     SwaggerModule.setup("/api/docs", app, document);
 
   await app.listen(PORT, () => console.log(`App run to ${PORT} port`));
+  logger.log(`Application listening at ${await app.getUrl()}`);
 }
 
 bootstrap();
