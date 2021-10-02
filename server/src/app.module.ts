@@ -1,8 +1,4 @@
-import { Inject, Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import * as RedisStore from 'connect-redis';
-import * as session from 'express-session';
-import { session as passportSession, initialize as passportInitialize } from 'passport';
-import { RedisClient } from 'redis';
+import { Logger, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -11,9 +7,6 @@ import { UsersModule } from './users/users.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { UserOrganization } from './organizations/organizations-users.model';
 import { Organization } from './organizations/organizations.model';
-import { AuthModule } from './auth/auth.module';
-import { RedisModule } from "./redis/redis.module";
-import { REDIS } from "./redis/redis.constans";
 
 const configure = new ConfigService();
 
@@ -36,31 +29,8 @@ const configure = new ConfigService();
       autoLoadModels: true
     }),
     UsersModule,
-    OrganizationsModule,
-    AuthModule,
-    RedisModule
+    OrganizationsModule
   ]
 })
 
-export class AppModule implements NestModule {
-  constructor(@Inject(REDIS) private readonly redis: RedisClient) {}
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(
-        session({
-          store: new (RedisStore(session))({ client: this.redis, logErrors: true }),
-          saveUninitialized: false,
-          secret: configure.get("REDIS_SECRET"),
-          resave: false,
-          cookie: {
-            sameSite: true,
-            httpOnly: false,
-            maxAge: 60000,
-          },
-        }),
-        passportInitialize(),
-        passportSession(),
-      )
-      .forRoutes('*');
-  }
-}
+export class AppModule {}
