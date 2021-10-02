@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { UserOrganization } from './organizations/organizations-users.model';
 import { Organization } from './organizations/organizations.model';
+import { AuthModule } from './auth/auth.module';
 
 const configure = new ConfigService();
 
@@ -29,7 +30,8 @@ const configure = new ConfigService();
       autoLoadModels: true
     }),
     UsersModule,
-    OrganizationsModule
+    OrganizationsModule,
+    AuthModule
   ]
 })
 
