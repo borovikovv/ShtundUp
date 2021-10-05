@@ -34,4 +34,10 @@ export class UsersService {
         // await user.$set("organization", [organizationId])
     }
 
+    async getAllUsers() {
+        const users = await this.userRepository.findAll();
+
+        return users;
+    }
+
 }
