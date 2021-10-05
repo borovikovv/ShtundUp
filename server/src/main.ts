@@ -1,10 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-require("dotenv").config({ path: `../.${process.env.NODE_ENV}.env` });
+import { AppModule } from './app.module';
 
 const configure = new ConfigService();
 

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import { compare, hash } from 'bcrypt';
 
@@ -26,6 +26,9 @@ export class AuthService {
     }
 
     async login(userDto: CreateUserDto) {
+        const user = await this.validateUser(userDto);
+
+        return this.generateToken(user);
     }
 
     private async generateToken(user: User) {
@@ -34,4 +37,15 @@ export class AuthService {
             token: this.jwtService.sign(payload)
         }
     }
+
+    private async validateUser(userDto: CreateUserDto) {
+        const user = await this.usersService.getUserByEmail(userDto.email);
+        const validatePassword = await compare(userDto.password, user.password);
+
+        if(validatePassword && user) {
+            return user;
+        }
+
+        throw new UnauthorizedException({message: "Email or password not correct, please try again."})
+    };
 }
