@@ -7,12 +7,12 @@ module.exports = {
     port: Number(process.env.POSTGRES_PORT),
     dialect: 'postgres'
   }
-//   development: {
-//     username: "olexii",
-//     password: "SudoPass7573User",
-//     database: "shtundup",
-//     host: "127.0.0.1",
-//     port: 5432,
-//     dialect: 'postgres'
-//   }
+  // development: {
+  //   username: "olexii",
+  //   password: "SudoPass7573User",
+  //   database: "shtundup",
+  //   host: "127.0.0.1",
+  //   port: 5432,
+  //   dialect: 'postgres'
+  // }
 };

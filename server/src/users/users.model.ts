@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Model, Table, BelongsToMany } from "sequelize-typescript";
+import { Column, DataType, Model, Table, BelongsToMany, HasOne } from "sequelize-typescript";
 import { UserOrganization } from "src/organizations/organizations-users.model";
 import { Organization } from "src/organizations/organizations.model";
-
+import { Token } from "../token/token.model";
 
 interface UserCreationAttrs {
     email: string,
@@ -52,5 +52,8 @@ export class User extends Model<User, UserCreationAttrs> {
 
     @BelongsToMany(() => Organization, () => UserOrganization)
     organization: Organization[];
+
+    @HasOne(() => Token)
+    token: Token
 
 }
