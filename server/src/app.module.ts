@@ -8,8 +8,6 @@ import { OrganizationsModule } from './organizations/organizations.module';
 import { UserOrganization } from './organizations/organizations-users.model';
 import { Organization } from './organizations/organizations.model';
 import { AuthModule } from './auth/auth.module';
-import { TokenModule } from './token/token.module';
-import { Token } from './token/token.model';
 
 const configure = new ConfigService();
 
@@ -28,13 +26,12 @@ const configure = new ConfigService();
       username: configure.get("POSTGRES_NAME"),
       password: configure.get("POSTGRES_PASSWORD"),
       database: configure.get("POSTGRES_DB"),
-      models: [User, Organization, UserOrganization, Token],
+      models: [User, Organization, UserOrganization],
       autoLoadModels: true
     }),
     UsersModule,
     OrganizationsModule,
-    AuthModule,
-    TokenModule
+    AuthModule
   ]
 })
 

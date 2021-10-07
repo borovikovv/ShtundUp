@@ -4,8 +4,6 @@ import { AuthModule } from 'src/auth/auth.module';
 import { UserOrganization } from 'src/organizations/organizations-users.model';
 import { Organization } from 'src/organizations/organizations.model';
 import { OrganizationsModule } from 'src/organizations/organizations.module';
-import { Token } from 'src/token/token.model';
-import { TokenModule } from 'src/token/token.module';
 import { UsersController } from './users.controller';
 import { User } from './users.model';
 import { UsersService } from './users.service';
@@ -14,9 +12,8 @@ import { UsersService } from './users.service';
   controllers: [UsersController],
   providers: [UsersService],
   imports: [
-    SequelizeModule.forFeature([User, Organization, UserOrganization, Token]),
+    SequelizeModule.forFeature([User, Organization, UserOrganization]),
     OrganizationsModule,
-    forwardRef(() => TokenModule),
     forwardRef(() => AuthModule)
   ],
   exports: [UsersService]
