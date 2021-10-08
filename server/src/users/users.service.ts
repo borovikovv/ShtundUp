@@ -46,7 +46,7 @@ export class UsersService {
         console.log(user);
 
         if(user) {
-            await user.$add("role", dto.value);
+            await user.update({role: dto.value});
             return dto;
         }
 

@@ -25,7 +25,7 @@ export class UsersController {
 
     @ApiOperation({summary: "Add role to user"})
     @ApiResponse({status: 200})
-    // @Role("admin")
+    @Role("admin")
     @UseGuards(RoleGuards)
     @UseGuards(JwtAuthGuards)
     @Post("/role")
