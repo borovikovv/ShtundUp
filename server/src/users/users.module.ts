@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
   providers: [UsersService],
   imports: [
     SequelizeModule.forFeature([User, Organization, UserOrganization]),
-    OrganizationsModule,
+    forwardRef(() => OrganizationsModule),
     forwardRef(() => AuthModule)
   ],
   exports: [UsersService]

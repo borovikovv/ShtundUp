@@ -6,13 +6,13 @@ import { Organization } from './organizations.model';
 import { OrganizationsService } from './organizations.service';
 
 @ApiTags("Organizations")
-@Controller('organizations')
+@Controller("organizations")
 export class OrganizationsController {
     constructor(private organizationService: OrganizationsService){}
 
     @ApiOperation({summary: "Create new organization"})
     @ApiResponse({status: 200, type: Organization})
-    @Post()
+    @Post("/create")
     create(@Body() dto: CreateOrganizationDto) {
         return this.organizationService.createOrganization(dto);
     }
