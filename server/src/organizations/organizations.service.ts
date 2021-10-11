@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { UsersService } from 'src/users/users.service';
 import { CreateOrganizationDto } from "./dto/create-organization.dto";
@@ -7,8 +7,8 @@ import { Organization } from './organizations.model';
 @Injectable()
 export class OrganizationsService {
 
-    constructor(@InjectModel(Organization) private organizationRepository: typeof Organization, 
-    private userService: UsersService){}
+    constructor(@InjectModel(Organization) private organizationRepository: typeof Organization,
+        @Inject(forwardRef(() => UsersService)) private usersService: UsersService){}
 
     async createOrganization(dto: CreateOrganizationDto) {
         const hasOrganization = await this.organizationRepository.findOne({where: {name: dto.name}});
