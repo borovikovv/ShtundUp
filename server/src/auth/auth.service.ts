@@ -48,4 +48,12 @@ export class AuthService {
 
         throw new UnauthorizedException({message: "Email or password not correct, please try again."})
     };
+
+    async decodeToken (data: string) {
+        const token = data.split(" ")[1];
+        
+        const user = await this.jwtService.decode(token);
+
+        return user;
+    };
 }

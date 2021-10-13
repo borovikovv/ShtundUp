@@ -4,12 +4,15 @@ import { User } from './users.model';
 import { CreateUserDto } from "./dto/create-user.dto";
 import { OrganizationsService } from 'src/organizations/organizations.service';
 import { AddRoleDto } from './dto/add-role.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UsersService {
 
     constructor(@InjectModel(User) private userRepository: typeof User,
-    @Inject(forwardRef(() => OrganizationsService))  private organizationService: OrganizationsService ){}
+    @Inject(forwardRef(() => OrganizationsService))  private organizationService: OrganizationsService,
+    @Inject(forwardRef(() => AuthService))  private authService: AuthService,
+    ){}
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto);
@@ -43,7 +46,6 @@ export class UsersService {
 
     async addRole(dto: AddRoleDto) {
         const user = await this.userRepository.findByPk(dto.userId);
-        console.log(user);
 
         if(user) {
             await user.update({role: dto.value});
@@ -51,6 +53,19 @@ export class UsersService {
         }
 
         throw new HttpException("Not found user", HttpStatus.NOT_FOUND)
+    }
+
+    async appointOrganizationOwner(organizationId: number, token: string) {
+        const userInfo:any = await this.authService.decodeToken(token);
+        const { id } = userInfo;
+        const user = await this.userRepository.findByPk(id);
+
+        if(user) {
+            await user.$set('organization', [organizationId])
+            return user;
+        }
+
+        throw new HttpException("Owner not set, try again.", HttpStatus.BAD_REQUEST)
     }
 
 }

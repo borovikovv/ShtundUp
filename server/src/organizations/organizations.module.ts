@@ -13,7 +13,8 @@ import { AuthModule } from 'src/auth/auth.module';
     providers: [OrganizationsService],
     imports: [
         SequelizeModule.forFeature([Organization, User, UserOrganization]),
-        forwardRef(() => UsersModule)
+        forwardRef(() => UsersModule),
+        forwardRef(() => AuthModule)
     ],
     exports: [
         OrganizationsService

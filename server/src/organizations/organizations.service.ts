@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 import { CreateOrganizationDto } from "./dto/create-organization.dto";
 import { Organization } from './organizations.model';
@@ -8,17 +9,28 @@ import { Organization } from './organizations.model';
 export class OrganizationsService {
 
     constructor(@InjectModel(Organization) private organizationRepository: typeof Organization,
-        @Inject(forwardRef(() => UsersService)) private usersService: UsersService){}
+        @Inject(forwardRef(() => UsersService)) private usersService: UsersService,
+        @Inject(forwardRef(() => AuthService)) private authService: AuthService){}
 
-    async createOrganization(dto: CreateOrganizationDto) {
+    async createOrganization(dto: CreateOrganizationDto, headers: any) {
         const hasOrganization = await this.organizationRepository.findOne({where: {name: dto.name}});
         if(hasOrganization) {
             throw new HttpException("Organization name already exist, try another name.", HttpStatus.BAD_REQUEST)
         }
 
         const organization = await this.organizationRepository.create(dto);
+        const user = await this.usersService.appointOrganizationOwner(organization.id, headers.authorization)
+
+        if(!user){
+
+            throw new HttpException("Error, try again", HttpStatus.BAD_REQUEST)
+        }
 
         return organization;
+    }
+
+    async deleteOrganization() {
+        
     }
 
     async getAllOrganizationUsers() {
