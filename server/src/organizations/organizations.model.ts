@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Model, Table, BelongsToMany } from "sequelize-typescript";
+import { Column, DataType, Model, Table, BelongsToMany, BelongsTo, ForeignKey } from "sequelize-typescript";
 import { User } from "src/users/users.model";
 import { AdminOrganization } from "./organization-admins.model";
 import { UserOrganization } from "./organizations-users.model";
@@ -33,4 +33,11 @@ export class Organization extends Model<Organization, OrganizationsCreationAttrs
 
     @BelongsToMany(() => User, () => AdminOrganization)
     admins: User[];
+
+    @ForeignKey(() => User)
+    @Column({type: DataType.INTEGER})
+    userId: number;
+
+    @BelongsTo(() => User)
+    owner: User
 }
