@@ -7,12 +7,13 @@ import { Organization } from "./organizations.model"
 import { UserOrganization } from "./organizations-users.model";
 import { UsersModule } from "src/users/users.module";
 import { AuthModule } from 'src/auth/auth.module';
+import { AdminOrganization } from './organization-admins.model';
 
 @Module({
     controllers: [OrganizationsController],
     providers: [OrganizationsService],
     imports: [
-        SequelizeModule.forFeature([Organization, User, UserOrganization]),
+        SequelizeModule.forFeature([Organization, User, UserOrganization, AdminOrganization]),
         forwardRef(() => UsersModule),
         forwardRef(() => AuthModule)
     ],
