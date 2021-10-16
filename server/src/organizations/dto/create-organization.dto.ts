@@ -9,5 +9,8 @@ export class CreateOrganizationDto {
     readonly color: string;
 
     @ApiProperty({example: "true or false", description: "Send request to accept in organization"})
-    readonly open: boolean 
+    readonly open: boolean
+
+    @ApiProperty({description: "Organization owner"})
+    readonly owner: number
 }

@@ -19,12 +19,7 @@ export class OrganizationsService {
         }
 
         const organization = await this.organizationRepository.create(dto);
-        const user = await this.usersService.appointOrganizationOwner(organization.id, headers.authorization)
-
-        if(!user){
-
-            throw new HttpException("Error, try again", HttpStatus.BAD_REQUEST)
-        }
+        // const user = await this.usersService.appointOrganizationOwner(organization.id, headers.authorization)
 
         return organization;
     }

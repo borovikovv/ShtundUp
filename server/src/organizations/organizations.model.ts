@@ -6,7 +6,8 @@ import { UserOrganization } from "./organizations-users.model";
 interface OrganizationsCreationAttrs {
     name: string,
     color: string,
-    open: boolean
+    open: boolean,
+    owner: number
 }
 
 @Table({tableName: "organizations"})
@@ -22,11 +23,10 @@ export class Organization extends Model<Organization, OrganizationsCreationAttrs
     @Column({ type: DataType.STRING, values: ["red", "blue", "green", "steelblue", "tomato"] })
     color: string
 
-    @ApiProperty({example: "true or false", description: "Need request to join you organization or no"})
+    @ApiProperty({example: "true or false", description: "IF NeedED request to join you organization"})
     @Column({ type: DataType.BOOLEAN })
     open: boolean
 
     @BelongsToMany(() => User, () => UserOrganization)
     users: User[];
-
 }

@@ -48,7 +48,7 @@ export class UsersService {
         const user = await this.userRepository.findByPk(dto.userId);
 
         if(user) {
-            await user.update({role: dto.value});
+            
             return dto;
         }
 
