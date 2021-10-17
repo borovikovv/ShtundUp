@@ -55,10 +55,8 @@ export class UsersService {
         throw new HttpException("Not found user", HttpStatus.NOT_FOUND)
     }
 
-    async appointOrganizationOwner(organizationId: number, token: string) {
-        const userInfo:any = await this.authService.decodeToken(token);
-        const { id } = userInfo;
-        const user = await this.userRepository.findByPk(id);
+    async setOrganizationOwner(organizationId: number, userId: number) {
+        const user = await this.userRepository.findByPk(userId);
 
         if(user) {
             await user.$set('organization', [organizationId])

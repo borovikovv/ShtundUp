@@ -13,15 +13,23 @@ export class OrganizationsService {
         @Inject(forwardRef(() => AuthService)) private authService: AuthService){}
 
     async createOrganization(dto: CreateOrganizationDto, headers: any) {
-        const hasOrganization = await this.organizationRepository.findOne({where: {name: dto.name}});
-        if(hasOrganization) {
-            throw new HttpException("Organization name already exist, try another name.", HttpStatus.BAD_REQUEST)
+        try {
+            const hasOrganization = await this.organizationRepository.findOne({where: {name: dto.name}});
+            if(hasOrganization) {
+                throw new HttpException("Organization name already exist, try another name.", HttpStatus.BAD_REQUEST)
+            }
+    
+            const userInfo:any = await this.authService.decodeToken(headers.authorization);
+            const { id } = userInfo;
+    
+            const organization = await this.organizationRepository.create({...dto, owner: id});
+            await this.usersService.setOrganizationOwner(organization.id, id)
+    
+            return organization;
+        } catch (e) {
+            console.log(e);
+            throw new HttpException("Error, try again", HttpStatus.BAD_REQUEST);
         }
-
-        const organization = await this.organizationRepository.create(dto);
-        // const user = await this.usersService.appointOrganizationOwner(organization.id, headers.authorization)
-
-        return organization;
     }
 
     async deleteOrganization() {
@@ -29,7 +37,7 @@ export class OrganizationsService {
     }
 
     async getAllOrganizationUsers() {
-        const users = await this.organizationRepository.findAll({attributes: ["users"]});
+        const users = await this.organizationRepository.findAll({attributes: ["name"]});
 
         return users;
     }
