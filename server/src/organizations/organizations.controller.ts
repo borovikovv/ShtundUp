@@ -20,7 +20,21 @@ export class OrganizationsController {
     @ApiOperation({summary: "Get all users in current organization"})
     @ApiResponse({status: 200, type: [User]})
     @Get()
-    getAllUsers() {
+    getAllOrganizations() {
         return this.organizationService.getAllOrganizationUsers();
+    }
+
+    @ApiOperation({summary: "Send request to join organization"})
+    @ApiResponse({status: 200, type: [Organization]})
+    @Post("/join")
+    joinTolOrganizations(@Body() params: any, @Headers() header: Headers) {
+        return this.organizationService.joinToOrganization(params.name, header);
+    }
+
+    @ApiOperation({summary: "Set lock or unlock to organization"})
+    @ApiResponse({status: 200, type: [Organization]})
+    @Post("/lock")
+    lockOrganizations(@Body() params: any) {
+        return this.organizationService.lockOrganization(params);
     }
 }

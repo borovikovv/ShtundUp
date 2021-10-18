@@ -36,6 +36,34 @@ export class OrganizationsService {
         
     }
 
+    async lockOrganization({name, lock}) {
+        const organization = await this.organizationRepository.findOne({where: { name: name }});
+
+        if(!organization) {
+            throw new HttpException("Wrong name, try again", HttpStatus.BAD_REQUEST);
+        }
+
+        organization.update({open: lock});
+
+        return organization;
+    }
+
+    async joinToOrganization(name: string, header) {
+        const organization = await this.organizationRepository.findOne({where: { name: name }});
+        const userInfo:any = await this.authService.decodeToken(header.authorization);
+        const { id } = userInfo;
+
+        if(!organization) {
+            throw new HttpException("Wrong name, try again", HttpStatus.BAD_REQUEST);
+        }
+
+        if(organization.open) {
+            await organization.$set("users", id);
+        }
+
+        return organization;
+    }
+
     async getAllOrganizationUsers() {
         const users = await this.organizationRepository.findAll({attributes: ["name"]});
 
