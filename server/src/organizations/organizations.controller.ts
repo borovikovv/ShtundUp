@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Headers } from '@nestjs/common';
+import { Controller, Post, Body, Get, Headers, Put } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { User } from 'src/users/users.model';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
@@ -33,7 +33,7 @@ export class OrganizationsController {
 
     @ApiOperation({summary: "Set lock or unlock to organization"})
     @ApiResponse({status: 200, type: [Organization]})
-    @Post("/lock")
+    @Put("/lock")
     lockOrganizations(@Body() params: any) {
         return this.organizationService.lockOrganization(params);
     }

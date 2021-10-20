@@ -52,13 +52,17 @@ export class OrganizationsService {
         const organization = await this.organizationRepository.findOne({where: { name: name }});
         const userInfo:any = await this.authService.decodeToken(header.authorization);
         const { id } = userInfo;
+        const user = await this.usersService.findUserById(id);
 
-        if(!organization) {
+        if(!organization && !user) {
             throw new HttpException("Wrong name, try again", HttpStatus.BAD_REQUEST);
         }
 
         if(organization.open) {
-            await organization.$set("users", id);
+            await organization.$add("users", [id]);
+            await user.$add("organization", [organization.id])
+
+            console.log(organization);
         }
 
         return organization;

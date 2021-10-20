@@ -34,6 +34,9 @@ export class Organization extends Model<Organization, OrganizationsCreationAttrs
     @BelongsToMany(() => User, () => AdminOrganization)
     admins: User[];
 
+    @BelongsTo(() => User)
+    ownerId: User
+
     @ForeignKey(() => User)
-    owner: User
+    userId: User
 }
