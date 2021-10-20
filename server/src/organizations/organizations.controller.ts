@@ -34,7 +34,15 @@ export class OrganizationsController {
     @ApiOperation({summary: "Set lock or unlock to organization"})
     @ApiResponse({status: 200, type: [Organization]})
     @Put("/lock")
-    lockOrganizations(@Body() params: any) {
-        return this.organizationService.lockOrganization(params);
+    lockOrganizations(@Body() params: any, @Headers() header: Headers) {
+        return this.organizationService.lockOrganization(params, header);
+    }
+
+    @ApiOperation({summary: "Set lock or unlock to organization"})
+    @ApiResponse({status: 200, type: [Organization]})
+    @Post("/set-admin")
+    setAdminToOrganization(@Body() params: any) {
+        console.log(params);
+        return this.organizationService.setAdminToOrganization(params.userId, params.organizationName);
     }
 }

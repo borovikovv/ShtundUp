@@ -24,7 +24,7 @@ export class Organization extends Model<Organization, OrganizationsCreationAttrs
     @Column({ type: DataType.STRING, values: ["red", "blue", "green", "steelblue", "tomato"] })
     color: string
 
-    @ApiProperty({example: "true or false", description: "IF NeedED request to join you organization"})
+    @ApiProperty({example: "true or false", description: "IF Needed request to join you organization"})
     @Column({ type: DataType.BOOLEAN, allowNull: false })
     open: boolean
 
@@ -35,8 +35,8 @@ export class Organization extends Model<Organization, OrganizationsCreationAttrs
     admins: User[];
 
     @BelongsTo(() => User)
-    ownerId: User
+    ownerId: number
 
     @ForeignKey(() => User)
-    userId: User
+    userId: number
 }

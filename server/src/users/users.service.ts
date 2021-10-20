@@ -66,4 +66,12 @@ export class UsersService {
         throw new HttpException("Owner not set, try again.", HttpStatus.BAD_REQUEST)
     }
 
+    async getUserInfo(header) {
+        const userInfo:any = await this.authService.decodeToken(header.authorization);
+        const { id } = userInfo;
+        const user = await this.getUserByEmail(id);
+
+        return user;
+    }
+
 }

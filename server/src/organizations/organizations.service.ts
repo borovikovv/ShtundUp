@@ -36,30 +36,31 @@ export class OrganizationsService {
         
     }
 
-    async lockOrganization({name, lock}) {
+    async lockOrganization({name, lock}, header) {
         const organization = await this.organizationRepository.findOne({where: { name: name }});
 
         if(!organization) {
             throw new HttpException("Wrong name, try again", HttpStatus.BAD_REQUEST);
         }
 
-        organization.update({open: lock});
-
-        return organization;
+        const user = await this.usersService.getUserInfo(header);
+        
+        // if(user.id === organization.ownerId || organization.admins.includes(user.id)) {
+        //     organization.update({open: lock});
+        //     return organization;
+        // }
     }
 
     async joinToOrganization(name: string, header) {
         const organization = await this.organizationRepository.findOne({where: { name: name }});
-        const userInfo:any = await this.authService.decodeToken(header.authorization);
-        const { id } = userInfo;
-        const user = await this.usersService.findUserById(id);
+        const user = await this.usersService.getUserInfo(header);
 
         if(!organization && !user) {
             throw new HttpException("Wrong name, try again", HttpStatus.BAD_REQUEST);
         }
 
         if(organization.open) {
-            await organization.$add("users", [id]);
+            await organization.$add("users", [user.id]);
             await user.$add("organization", [organization.id])
 
             console.log(organization);
@@ -72,6 +73,18 @@ export class OrganizationsService {
         const users = await this.organizationRepository.findAll({attributes: ["name"]});
 
         return users;
+    }
+
+    async setAdminToOrganization(userId: number, organizationName: string) {
+        const organization = await this.organizationRepository.findOne({where: { name: organizationName }})
+        
+        if(!organization) {
+            throw new HttpException("Wrong name, try again", HttpStatus.BAD_REQUEST);
+        }
+
+        organization.$set("admins", [userId])
+
+        return organization;
     }
 
 }
