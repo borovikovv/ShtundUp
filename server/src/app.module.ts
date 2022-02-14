@@ -18,22 +18,21 @@ const configure = new ConfigService();
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
-      isGlobal: true
+      isGlobal: true,
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: configure.get("HOST"),
-      port: Number(configure.get("POSTGRES_PORT")),
-      username: configure.get("POSTGRES_NAME"),
-      password: configure.get("POSTGRES_PASSWORD"),
-      database: configure.get("POSTGRES_DB"),
+      host: configure.get('HOST'),
+      port: Number(configure.get('POSTGRES_PORT')),
+      username: configure.get('POSTGRES_NAME'),
+      password: configure.get('POSTGRES_PASSWORD'),
+      database: configure.get('POSTGRES_DB'),
       models: [User, Organization, UserOrganization, AdminOrganization],
-      autoLoadModels: true
+      autoLoadModels: true,
     }),
     UsersModule,
     OrganizationsModule,
-    AuthModule
-  ]
+    AuthModule,
+  ],
 })
-
 export class AppModule {}
