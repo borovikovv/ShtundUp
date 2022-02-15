@@ -10,7 +10,11 @@ import { Organization } from './organizations/organizations.model';
 import { AuthModule } from './auth/auth.module';
 import { AdminOrganization } from './organizations/organization-admins.model';
 
+import { config } from 'dotenv';
 const configure = new ConfigService();
+config();
+
+console.log(process.env.NODE_ENV, 'process');
 
 @Module({
   controllers: [],
