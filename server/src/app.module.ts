@@ -33,6 +33,12 @@ console.log(process.env.NODE_ENV, 'process');
       database: configure.get('POSTGRES_DB'),
       models: [User, Organization, UserOrganization, AdminOrganization],
       autoLoadModels: true,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
     }),
     UsersModule,
     OrganizationsModule,
